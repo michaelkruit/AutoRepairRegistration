@@ -47,7 +47,7 @@ namespace SammysAuto.Controllers
         //Details: ServiceTypes/Details
         public async Task<IActionResult> Details(int? id)
         {
-            if(id == null)
+            if (id == null)
             {
                 return NotFound();
             }
@@ -57,6 +57,63 @@ namespace SammysAuto.Controllers
                 return NotFound();
             }
             return View(ServiceType);
+        }
+
+        //Edit: ServiceTypes/Edit
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var ServiceType = await _db.ServiceTypes.SingleOrDefaultAsync(m => m.Id == id);
+            if (ServiceType == null)
+            {
+                return NotFound();
+            }
+            return View(ServiceType);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, ServiceType serviceType)
+        {
+            if(id != serviceType.Id)
+            {
+                return NotFound();
+            }
+            if (ModelState.IsValid)
+            {
+                _db.Update(serviceType);
+                await _db.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(serviceType);
+        }
+
+        //Details: ServiceTypes/Delete
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var ServiceType = await _db.ServiceTypes.SingleOrDefaultAsync(m => m.Id == id);
+            if (ServiceType == null)
+            {
+                return NotFound();
+            }
+            return View(ServiceType);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RemoveServiceType(int id)
+        {
+            var serviceType = await _db.ServiceTypes.SingleOrDefaultAsync(st => st.Id == id);
+            _db.Remove(serviceType);
+            await _db.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         protected override void Dispose(bool disposing)
