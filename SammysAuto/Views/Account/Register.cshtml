@@ -1,4 +1,5 @@
 ﻿@model RegisterViewModel
+@using SammysAuto.Utility
 @{
     ViewData["Title"] = "Register";
 }
@@ -125,13 +126,35 @@
             <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
         </div>
 
+        @if (User.IsInRole(SD.AdminEndUser))
+        {
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-2">
+                        <label asp-for="isAdmin"></label>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <input asp-for="isAdmin" type="checkbox" />
+                    </div>
+                </div>
+            </div>
+        }
+
         <div class="form-group">
             <div class="row">
                 <div class="col-sm-2">
                 </div>
 
                 <div class="col-sm-4">
-                    <button type="submit" class="btn btn-sm btn-primary form-control">Register</button>
+                    @if (User.IsInRole(SD.AdminEndUser))
+                    {
+                        <button type="submit" class="btn btn-sm btn-primary form-control">Add customer</button>
+                    }
+                    else
+                    {
+                        <button type="submit" class="btn btn-sm btn-primary form-control">Register</button>
+                    }
                 </div>
             </div>
         </div>
