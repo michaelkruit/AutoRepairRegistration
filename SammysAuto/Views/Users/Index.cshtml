@@ -79,7 +79,7 @@
                         </a>
                     </td>
                     <td>
-                        EDIT | DELETE | DETAILS
+                        @Html.Partial("_TableButtonPartial", new IndividualButtonPartial { CustomerId = item.Id})
                     </td>
                 </tr>
             }
