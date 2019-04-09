@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SammysAuto.Data;
+using SammysAuto.Models;
 
 namespace SammysAuto.Controllers
 {
@@ -38,6 +40,103 @@ namespace SammysAuto.Controllers
                 }
             }
             return View(users);
+        }
+
+        // GET Details
+        public async Task<IActionResult> Details(string id)
+        {
+            if(id == null)
+            {
+                return NotFound();
+            }
+
+            ApplicationUser user = await _db.Users.SingleOrDefaultAsync(u => u.Id == id);
+            if(user == null)
+            {
+                return NotFound();
+            }
+
+            return View(user);
+        }
+
+        // GET Edit
+        public async Task<IActionResult> Edit(string id)
+        {
+            if(id == null)
+            {
+                return NotFound();
+            }
+
+            ApplicationUser user = await _db.Users.SingleOrDefaultAsync(u => u.Id == id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return View(user);
+        }
+
+        //POST Edit
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(ApplicationUser user)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("Edit", user);
+            }
+            else
+            {
+                var userInDb = await _db.Users.SingleOrDefaultAsync(u => u.Id == user.Id);
+                if(userInDb == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    userInDb.FirstName = user.FirstName;
+                    userInDb.LastName = user.LastName;
+                    userInDb.Email = user.Email;
+                    userInDb.PhoneNumber = user.PhoneNumber;
+                    userInDb.Address = user.Address;
+                    userInDb.City = user.City;
+                    await _db.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+        }
+
+        // GET Delete
+        public async Task<IActionResult> Delete(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            ApplicationUser user = await _db.Users.SingleOrDefaultAsync(u => u.Id == id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return View(user);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(string id)
+        {
+            if(id == null)
+            {
+                return NotFound();
+            }
+
+            var userInDb = await _db.Users.SingleOrDefaultAsync(u => u.Id == id);
+            _db.Remove(userInDb);
+            await _db.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
         }
 
         protected override void Dispose(bool disposing)

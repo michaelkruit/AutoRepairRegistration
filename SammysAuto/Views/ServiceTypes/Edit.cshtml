@@ -10,6 +10,7 @@
 <form asp-action="Edit">
     <div class="form-border">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input asp-for="Id" type="hidden" />
         <div class="form-group">
             <div class="row">
                 <div class="col-sm-1">
@@ -24,7 +25,7 @@
         </div>
         <br />
         <div class="form-group">
-            <input type="submit" value="Edit" class="btn btn-sm btn-primary" />
+            <input type="submit" value="Update" class="btn btn-sm btn-primary" />
             <a asp-action="Index" class="btn btn-sm btn-success">Back to list</a>
         </div>
     </div>
