@@ -63,6 +63,102 @@ namespace SammysAuto.Controllers
             return View(car);
         }
 
+        //Details GET
+        public async Task<IActionResult> Details(int? id)
+        {
+            if(id == null)
+            {
+                return NotFound();
+            }
+
+            var car = await _db.Cars
+                .Include(c => c.ApplicationUser)
+                .SingleOrDefaultAsync(m => m.Id == id);
+
+            if(car == null)
+            {
+                return NotFound();
+            }
+
+            return View(car);
+        }
+
+        //Edit GET
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var car = await _db.Cars
+                .Include(c => c.ApplicationUser)
+                .SingleOrDefaultAsync(m => m.Id == id);
+
+            if (car == null)
+            {
+                return NotFound();
+            }
+
+            return View(car);
+        }
+
+        //Edit Post
+        [HttpPost]
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> Edit(int id, Car car)
+        {
+            if(id != car.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                _db.Update(car);
+                await _db.SaveChangesAsync();
+                return RedirectToAction(nameof(Index), new { userId = car.UserId });
+            }
+
+            return View(car);
+        }
+
+        //Delte GET
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var car = await _db.Cars
+                .Include(c => c.ApplicationUser)
+                .SingleOrDefaultAsync(m => m.Id == id);
+
+            if (car == null)
+            {
+                return NotFound();
+            }
+
+            return View(car);
+        }
+
+        //Delete Post
+        [HttpPost,ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmend(int id)
+        {
+            var car = await _db.Cars.SingleOrDefaultAsync(c => c.Id == id);
+            if(car == null)
+            {
+                return NotFound();
+            }
+            _db.Cars.Remove(car);
+            await _db.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index), new { userId = car.UserId });
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
