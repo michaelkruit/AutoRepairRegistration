@@ -13,9 +13,10 @@ namespace SammysAuto.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
-        }
+        } 
 
         public DbSet<ServiceType> ServiceTypes { get; set; }
+        public DbSet<Car> Cars { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
