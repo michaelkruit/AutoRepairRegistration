@@ -101,7 +101,7 @@ else
                 @if (User.IsInRole(SD.CustomerEndUser))
                 {
                     <td style="width: 100px;">
-                        <a class="btn btn-primary btn-sm" asp-controller="Services" asp-action="Index" asp-route-carId="@item.Id">
+                        <a class="btn btn-primary btn-sm" asp-controller="Service" asp-action="Index" asp-route-carId="@item.Id">
                             <span class="glyphicon glyphicon-wrench"></span> &nbsp; Service History
                         </a>
                     </td>
@@ -109,7 +109,7 @@ else
                 else
                 {
                     <td style="width: 100px;">
-                        <a class="btn btn-success btn-sm" asp-controller="Services" asp-action="Index" asp-route-carId="@item.Id">
+                        <a class="btn btn-success btn-sm" asp-controller="Service" asp-action="Create" asp-route-carId="@item.Id">
                             <span class="glyphicon glyphicon-plus-sign"></span> &nbsp; New Service
                         </a>
                     </td>
