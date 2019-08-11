@@ -61,3 +61,27 @@
         </div>
     </form>
 </div>
+
+<br />
+<hr />
+<h4>Past Service Records</h4>
+
+<div class="row form-border">
+    @Html.Partial("_DisplayPastServices", Model)
+    
+    <div class="row">
+        @if (!Model.PastServicesObj.Any())
+        {
+            <div class="col-sm-12 text-primary" style="padding-bottom: 20px;">No past service records found</div>
+        }
+        <div class="col-sm-3">
+            <a asp-controller="cars" asp-action="index" asp-route-userId="@Model.UserId" class="btn btn-sm btn-success">Back to list</a>
+        </div>
+        @if (Model.PastServicesObj.Count() > 4)
+        {
+            <div class="pull-right" style="padding-right: 20px">
+                <a asp-action="Index" asp-route-CarId="@Model.carId" class="text-primary">Load all..</a>
+            </div>
+        }
+    </div>
+</div>

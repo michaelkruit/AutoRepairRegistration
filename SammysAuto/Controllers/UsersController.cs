@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SammysAuto.Data;
 using SammysAuto.Models;
+using SammysAuto.Utility;
 
 namespace SammysAuto.Controllers
 {
+    [Authorize(Roles = SD.AdminEndUser)]
     public class UsersController : Controller
     {
         private ApplicationDbContext _db;
