@@ -134,11 +134,22 @@ namespace SammysAuto.Controllers
             {
                 return NotFound();
             }
-
+            // Get user object
             var userInDb = await _db.Users.SingleOrDefaultAsync(u => u.Id == id);
+            // Get car objects
+            var cars = _db.Cars.Where(x => x.UserId == userInDb.Id);
+            // Create list of carIds
+            var carIds = cars.Select(c => c.Id).ToList();
+            // Get services objects for cars
+            var services = _db.Services.Where(s => carIds.Contains(s.CarId)).ToList();
+            // Remove services
+            _db.RemoveRange(services);
+            // Remove cars
+            _db.RemoveRange(cars);
+            // remove user
             _db.Remove(userInDb);
-            await _db.SaveChangesAsync();
 
+            await _db.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 

@@ -44,6 +44,7 @@ namespace SammysAuto
         {
             if (env.IsDevelopment())
             {
+                app.UseExceptionHandler("/Home/Error");
                 app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
